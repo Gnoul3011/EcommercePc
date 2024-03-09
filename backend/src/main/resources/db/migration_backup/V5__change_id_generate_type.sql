@@ -1,0 +1,16 @@
+create sequence account_detail_seq start with 1 increment by 50;
+create sequence account_group_seq start with 1 increment by 50;
+create sequence account_order_seq start with 1 increment by 50;
+create sequence account_permission_seq start with 1 increment by 50;
+create sequence account_seq start with 1 increment by 50;
+create sequence account_type_seq start with 1 increment by 50;
+create sequence brand_seq start with 1 increment by 50;
+create sequence category_seq start with 1 increment by 50;
+create sequence order_detail_seq start with 1 increment by 50;
+create sequence permission_group_seq start with 1 increment by 50;
+create sequence permission_seq start with 1 increment by 50;
+create sequence product_image_seq start with 1 increment by 50;
+create sequence product_info_seq start with 1 increment by 50;
+create sequence product_seq start with 1 increment by 50;
+create sequence product_warranty_seq start with 1 increment by 50;
+create sequence warranty_period_seq start with 1 increment by 50;

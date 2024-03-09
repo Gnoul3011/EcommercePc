@@ -1,0 +1,80 @@
+services:
+  db:
+    image: postgres:latest
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    container_name: postgres-ecommerce
+    volumes:
+      - ./backend/pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - spring-postgres
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    restart: always
+    container_name: pgadmin4-ecommerce
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=pgadmin4
+      - PGADMIN_CONFIG_PROXY_X_HOST_COUNT= 1
+      - PGADMIN_CONFIG_PROXY_X_PREFIX_COUNT= 1
+    ports:
+      - "5050:80"
+    depends_on:
+      - db
+    networks:
+      - spring-postgres
+
+  backend:
+    container_name: backend-ecommerce
+    depends_on:
+      - db
+    build:
+      context: ./backend/
+      dockerfile: Dockerfile
+    environment:
+      DB_HOST: "db"
+      DB_PORT: 5432
+      DB_NAME: "postgres"
+      DB_USERNAME: "postgres"
+      DB_PASSWORD: "postgres"
+      DB_PASSWORD_FILE: /run/secrets/db_password
+    volumes:
+      - ./backend/:/app
+      - ./backend/.m2:/root/.m2
+    networks:
+      - spring-postgres
+    working_dir: /app
+    command: sh run.sh
+    ports:
+      - 8080:8080
+      - 5005:5005
+      - 35729:35729
+
+  # frontend:
+  #   container_name: frontend-ecommerce
+  #   depends_on:
+  #     - backend
+  #   build:
+  #     context: ./frontend/
+  #     dockerfile: Dockerfile
+  #   volumes:
+  #     - ./frontend/:/frontend
+  #     - /frontend/node_modules
+  #   networks:
+  #     - spring-postgres
+  #   working_dir: /frontend
+  #   command: npm start
+  #   ports:
+  #     - 3000:3000
+
+volumes:
+  db: {}
+secrets:
+  db-password:
+    file: db/password.txt
+networks:
+  spring-postgres:

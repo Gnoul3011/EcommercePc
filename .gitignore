@@ -1,0 +1,5 @@
+.vscode
+*/.m2
+
+*/main/resources/images/*
+*/main/resources/thumbnails/*
